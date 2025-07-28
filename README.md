@@ -27,7 +27,6 @@ Both REST and WebSocket operations interact with this in-memory manager to retri
 
 ```bash
 git clone https://github.com/AdielSG/WebSocket-Alert-Server.git
-cd Technica_Test
 ```
 
 2. **Create and activate a virtual environment**
@@ -36,13 +35,32 @@ cd Technica_Test
 python -m venv venv
 ```
 
-3. **Install dependencies**
+3. **Activate the Virtual Environment**
+
+Use the appropriate command depending on your operating system:
+
+• Windows (PowerShell):
+```bash
+.\venv\Scripts\activate.ps1
+```
+
+• Windows (Command Prompt):
+```bash
+venv\Scripts\activate.bat
+```
+
+• macOS / Linux:
+```bash
+source venv/bin/activate
+```
+
+4. **Install dependencies**
 
 ```bash
 pip install -r requirements.txt
 ```
 
-4. **Create a `.env` file at the root of the project with the following environment variables**
+5. **Create a `.env` file at the root of the project with the following environment variables**
 
 ```bash
 CORS_ORIGINS_ALLOWED=http://localhost:3000  # Frontend origins allowed
@@ -54,17 +72,16 @@ DOMAIN=127.0.0.1:8000                       # Your app domain (e.g. localhost:80
 ```
 🔧 Replace the values as needed for your local or deployed environment.
 
-5. **Run the server**
+6. **Run the server**
 
 ```bash
 uvicorn app.main:app --reload
 ```
-
 ---
 
 ## 📡 WebSocket
 
-1. **Connect to WebSocket**
+1. **Connect to the WebSocket using Postman or any WebSocket client**
 
 Use the following URL to connect locally:
 
