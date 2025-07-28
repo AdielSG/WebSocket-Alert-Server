@@ -1,7 +1,5 @@
 import pytest
-from fastapi.testclient import TestClient
-from fastapi import FastAPI
-from httpx import AsyncClient, ASGITransport
+from httpx import AsyncClient
 from datetime import datetime
 from websockets import connect
 import sys
@@ -10,7 +8,6 @@ import uuid
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-from app.main import app
 from app.config import DOMAIN
         
 
@@ -18,7 +15,7 @@ from app.config import DOMAIN
 async def test_post_alert():
     ws_uri = f"ws://{DOMAIN}/ws"
 
-    async with connect(ws_uri) as websocket:
+    async with connect(ws_uri):
         async with AsyncClient(base_url=f"http://{DOMAIN}") as ac:
             payload = {
                 "message": "Puerta abierta sin autorización",

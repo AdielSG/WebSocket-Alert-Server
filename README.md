@@ -42,7 +42,19 @@ python -m venv venv
 pip install -r requirements.txt
 ```
 
-4. **Run the server**
+4. **Create a `.env` file at the root of the project with the following environment variables**
+
+```bash
+CORS_ORIGINS_ALLOWED=http://localhost:3000  # Frontend origins allowed
+CORS_CREDENTIAL=true                        # Whether to allow credentials
+CORS_METHODS_ALLOWED=POST,GET               # HTTP methods to allow
+CORS_HEADERS_ALLOWED=Authorization          # Headers to allow
+DOMAIN=127.0.0.1:8000                       # Your app domain (e.g. localhost:8000)
+
+```
+🔧 Replace the values as needed for your local or deployed environment.
+
+5. **Run the server**
 
 ```bash
 uvicorn app.main:app --reload

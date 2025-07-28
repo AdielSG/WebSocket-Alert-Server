@@ -14,7 +14,7 @@ async def websocket_endpoint(websocket: WebSocket):
                 storage.add_chat(chat=chat)
 
                 await manager.broadcast(chat.model_dump(mode="json"))
-            except ValidationError as e:
+            except ValidationError:
                 print("Ha ocurrido un error de serializacion")
                 await websocket.send_json({
                     "type": "error",
