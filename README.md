@@ -115,8 +115,11 @@ When a user sends a chat message, it is broadcasted to all connected clients in 
 
 ```json
 {
-  "sender": "Operator 1",
-  "message": "What’s happening at North Gate?"
+    "id": "7bb4eacd-9d48-4fff-a9d0-a7caffbd52a8",
+    "timestamp": "2025-07-28T12:24:44.157040",
+    "type": "chat",
+    "sender": "Jose",
+    "message": "Please check the back door"
 }
 ```
 
