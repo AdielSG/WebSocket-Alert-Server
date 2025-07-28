@@ -6,4 +6,5 @@ ENV/
 .env.*
 
 .vscode/
+__pycache__/
 *.code-workspace

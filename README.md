@@ -2,6 +2,12 @@
 
 This project is a backend server that powers a real-time alert dashboard. It provides both a REST API and WebSocket server to handle automated alerts, chat messages, and manual event triggering.
 
+## ⚠️ How alerts and chat messages are handled and stored in memory
+
+The system uses a custom-built StorageManager that handles both alert and chat message persistence using Python’s deque from the collections module. This structure efficiently stores only the last 10 alerts and last 10 chat messages, automatically discarding the oldest entries when new ones are added. This ensures memory usage remains minimal and consistent, in line with the technical requirement to avoid database usage.
+
+Both REST and WebSocket operations interact with this in-memory manager to retrieve or store messages in real-time.
+
 ---
 
 ## 🚀 Tech Stack
@@ -46,13 +52,23 @@ uvicorn app.main:app --reload
 
 ## 📡 WebSocket
 
-1. **Connect to**
+1. **Connect to WebSocket**
+
+Use the following URL to connect locally:
 
 ```bash
 ws://localhost:8000/ws
 ```
 
+**Or**, if you want to test the deployed version (note that due to the free hosting tier, the server may take a few seconds to wake up after being idle), use:
+
+```bash
+ws://websocket-alert-server.onrender.com/ws
+```
+
 2. **Automatic alerts (every 10 seconds):**
+
+The server automatically generates and broadcasts an alert every 10 seconds. The alert follows this structure:
 
 ```json
 {
@@ -64,7 +80,9 @@ ws://localhost:8000/ws
 }
 ```
 
-3. **Send chat messages:**
+3. **Sending chat messages:**
+
+When a user sends a chat message, it is broadcasted to all connected clients in the following format:
 
 ```json
 {
@@ -139,6 +157,51 @@ Get the last 10 alerts stored in memory
 }
 ```
 
+`POST /message`
+
+Send a manual message and broadcast it to WebSocket clients.
+
+**Request:**
+
+```json
+{
+    "sender": "Jose",
+    "message": "Please check the back door"
+}
+```
+
+**Response:**
+
+```json
+{
+    "id": "3c248f90-0242-4685-a8b3-8e84e1b226a9",
+    "timestamp": "2025-07-28T00:01:58.036234",
+    "type": "chat",
+    "sender": "Jose",
+    "message": "Please check the back door"
+}
+```
+
+`GET /message`
+
+Get the last 10 chat messages stored in memory
+
+**Response:**
+```json
+{
+    "chatMessages": [
+        {
+            "id": "3c248f90-0242-4685-a8b3-8e84e1b226a9",
+            "timestamp": "2025-07-28T00:01:58.036234",
+            "type": "chat",
+            "sender": "Jose",
+            "message": "Please check the back door"
+        }
+    ],
+    "count": 1
+}
+```
+
 ---
 
 ## 🧠 Project Structure
@@ -148,7 +211,7 @@ Get the last 10 alerts stored in memory
 ├── app/
 │   ├── main.py               # FastAPI app with lifespan + setup
 │   ├── config.py             # App configuration
-│   └── dependecies.py        # Shared dependencies (if needed)
+│   └── dependencies.py        # Shared dependencies (if needed)
 ├── routes/                   # REST API routers
 ├── controllers/             # Endpoint logic handlers
 ├── services/                # Business logic (alerts, chat)
